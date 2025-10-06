@@ -16,7 +16,7 @@ export default {
             nativa: {
                 x: 100,
                 y: 40,
-                speed: 3,
+                speed: 4,
                 width: 0,
                 height: 0,
                 facingRight: true,
@@ -91,10 +91,10 @@ export default {
 
             if (vw < 768) {
                 this.nativa.height = vh * 0.55;
-                this.nativa.speed = 3;
+                this.nativa.speed = 4;
             } else {
                 this.nativa.height = vh * 0.30;
-                this.nativa.speed = 3;
+                this.nativa.speed = 4;
             }
 
             this.nativa.width = this.nativa.height * 0.95;
