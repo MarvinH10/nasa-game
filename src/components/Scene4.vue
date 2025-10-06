@@ -1,10 +1,19 @@
 <script>
+import GamePlants from './GamePlants.vue'
+import Scene5 from './Scene5.vue'
+
 export default {
     name: 'SceneFour',
-    emits: ['goBack'],
+    components: {
+        GamePlants,
+        Scene5
+    },
+    emits: ['goBack', 'goNext'],
     data() {
         return {
             backgroundImage: '/personajes/escenarios/escenario4.jpg',
+            showGame: false,
+            showScene5: false,
             mousePosition: {
                 x: 0,
                 y: 0
@@ -69,6 +78,12 @@ export default {
         handleGoBack() {
             this.$emit('goBack');
         },
+        handleGoNext() {
+            this.showScene5 = true;
+        },
+        handleGameFinish() {
+            this.$emit('goNext');
+        },
         updateScreenBounds() {
             const screen = this.$refs.monitorScreen;
             if (screen) {
@@ -123,6 +138,12 @@ export default {
         },
         closeVideo() {
             this.currentVideo = null;
+        },
+        startGame() {
+            this.showGame = true;
+        },
+        handleGameComplete() {
+            this.showGame = false;
         }
     }
 }
@@ -130,7 +151,11 @@ export default {
 
 <template>
     <div>
-        <div v-if="currentVideo" class="video-fullscreen">
+        <GamePlants v-if="showGame" @gameComplete="handleGameComplete" @goBack="showGame = false" />
+
+        <Scene5 v-else-if="showScene5" @goBack="showScene5 = false" @finish="handleGameFinish" />
+
+        <div v-else-if="currentVideo" class="video-fullscreen">
             <video class="fullscreen-video" controls autoplay>
                 <source :src="currentVideo.url" type="video/mp4">
                 Tu navegador no soporta el elemento de video.
@@ -194,6 +219,14 @@ export default {
                     <div class="mouse-body"></div>
                 </div>
             </div>
+
+            <button class="play-button" @click="startGame">
+                🎮 Jugar
+            </button>
+
+            <button class="next-button" @click="handleGoNext">
+                Next →
+            </button>
 
             <button class="back-button" @click="handleGoBack">
                 ← Back
@@ -566,6 +599,66 @@ export default {
 
 .close-video-button:active {
     transform: scale(0.98);
+}
+
+.play-button {
+    position: absolute;
+    right: 16.8%;
+    top: 68%;
+    transform: translateX(50%);
+    padding: 18px 35px;
+    background: rgba(39, 174, 96, 0.95);
+    color: #ffffff;
+    border: 3px solid #1a7a3e;
+    border-radius: 12px;
+    font-size: 22px;
+    font-weight: 900;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    backdrop-filter: blur(5px);
+    z-index: 1000;
+    box-shadow: 0 6px 20px rgba(39, 174, 96, 0.4);
+    animation: pulse-play 2s ease-in-out infinite;
+}
+
+.play-button:hover {
+    background: rgba(39, 174, 96, 1);
+    transform: translateX(50%) scale(1.15);
+    box-shadow: 0 8px 25px rgba(39, 174, 96, 0.6);
+}
+
+.play-button:active {
+    transform: translateX(50%) scale(1.05);
+}
+
+.next-button {
+    position: absolute;
+    right: 16.8%;
+    top: 78%;
+    transform: translateX(50%);
+    padding: 18px 35px;
+    background: rgba(1, 13, 185, 0.95);
+    color: #ffffff;
+    border: 3px solid #1a1c7a;
+    border-radius: 12px;
+    font-size: 22px;
+    font-weight: 900;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    backdrop-filter: blur(5px);
+    z-index: 1000;
+    box-shadow: 0 6px 20px rgba(2, 6, 255, 0.4);
+    animation: pulse-play 2s ease-in-out infinite;
+}
+
+.next-button:hover {
+    background: rgba(1, 13, 185, 0.95);
+    transform: translateX(50%) scale(1.15);
+    box-shadow: 0 8px 25px rgba(2, 6, 255, 0.4);
+}
+
+.next-button:active {
+    transform: translateX(50%) scale(1.05);
 }
 
 @media (max-width: 1200px) {

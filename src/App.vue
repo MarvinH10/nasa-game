@@ -36,17 +36,14 @@ export default {
 
 <template>
   <div id="app">
-    <!-- 1. Pantalla de carga -->
     <transition name="fade">
       <GameLoader v-if="showLoader" @loadingComplete="handleLoadingComplete" />
     </transition>
 
-    <!-- 2. Video de historia -->
     <transition name="fade">
       <GameHistory v-if="showHistory" @videoComplete="handleVideoComplete" />
     </transition>
 
-    <!-- 3. Escenario 1 -->
     <transition name="fade">
       <Scene1 v-if="showScene1" />
     </transition>
